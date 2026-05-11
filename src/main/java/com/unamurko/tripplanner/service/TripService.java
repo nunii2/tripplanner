@@ -1,33 +1,31 @@
 package com.unamurko.tripplanner.service;
 
-import com.unamurko.tripplanner.dto.TripDTO;
+import com.unamurko.tripplanner.entity.Trip;
+import com.unamurko.tripplanner.repository.TripRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.*;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TripService {
 
-    private List<TripDTO> trips = new ArrayList<>();
-    private Long nextId = 1L;
+    private final TripRepository tripRepository;
 
-    public List<TripDTO> getAllTrips() {
-        return trips;
+    public List<Trip> getAllTrips() {
+        return tripRepository.findAll();
     }
 
-    public TripDTO getTripById(Long id) {
-        return trips.stream()
-                .filter(t -> t.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+    public Trip getTripById(Long id) {
+        return tripRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Trip not found"));
     }
 
-    public TripDTO createTrip(TripDTO trip) {
-        trip.setId(nextId++);
-        trips.add(trip);
-        return trip;
+    public Trip createTrip(Trip trip) {
+        return tripRepository.save(trip);
     }
 
     public void deleteTrip(Long id) {
-        trips.removeIf(t -> t.getId().equals(id));
+        tripRepository.deleteById(id);
     }
 }
