@@ -1,6 +1,8 @@
 package com.unamurko.tripplanner.controller;
 
 import com.unamurko.tripplanner.dto.TripDTO;
+import com.unamurko.tripplanner.service.TripService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -8,37 +10,31 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/trips")
+@RequiredArgsConstructor
 public class TripController {
 
-    // temporary list to store all trips
-    private List<TripDTO> trips = new ArrayList<>();
-    private Long nextId = 1L;
+    private final TripService tripService;
 
     // GET /api/trips - get all trips
     @GetMapping
     public List<TripDTO> getTrips() {
-        return trips;
+        return tripService.getAllTrips();
     }
 
     // GET /api/trips/1 - get one specific trip
     @GetMapping("/{id}")
     public TripDTO getTrip(@PathVariable Long id) {
-        return trips.stream()
-                .filter(t -> t.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return tripService.getTripById(id);
     }
 
     @PostMapping
     public TripDTO createTrip(@RequestBody TripDTO trip) {
-        trip.setId(nextId++);
-        trips.add(trip);
-        return trip;
+        return tripService.createTrip(trip);
     }
 
     @DeleteMapping("/{id}")
     public String deleteTrip(@PathVariable Long id) {
-        trips.removeIf(t -> t.getId().equals(id));
+        tripService.deleteTrip(id);
         return "Trip deleted.";
     }
 }
