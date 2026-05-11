@@ -1,6 +1,6 @@
 package com.unamurko.tripplanner.controller;
 
-import com.unamurko.tripplanner.dto.TripDTO;
+import com.unamurko.tripplanner.entity.Trip;
 import com.unamurko.tripplanner.service.TripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +17,18 @@ public class TripController {
 
     // GET /api/trips - get all trips
     @GetMapping
-    public List<TripDTO> getTrips() {
+    public List<Trip> getTrips() {
         return tripService.getAllTrips();
     }
 
     // GET /api/trips/1 - get one specific trip
     @GetMapping("/{id}")
-    public TripDTO getTrip(@PathVariable Long id) {
+    public Trip getTrip(@PathVariable Long id) {
         return tripService.getTripById(id);
     }
 
     @PostMapping
-    public TripDTO createTrip(@RequestBody TripDTO trip) {
+    public Trip createTrip(@RequestBody Trip trip) {
         return tripService.createTrip(trip);
     }
 
