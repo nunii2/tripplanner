@@ -3,7 +3,10 @@ package com.unamurko.tripplanner.service;
 import com.unamurko.tripplanner.entity.Trip;
 import com.unamurko.tripplanner.repository.TripRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -18,7 +21,9 @@ public class TripService {
 
     public Trip getTripById(Long id) {
         return tripRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Trip not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Trip not found"
+                ));
     }
 
     public Trip createTrip(Trip trip) {
@@ -28,4 +33,5 @@ public class TripService {
     public void deleteTrip(Long id) {
         tripRepository.deleteById(id);
     }
+
 }

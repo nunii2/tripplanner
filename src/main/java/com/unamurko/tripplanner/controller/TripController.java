@@ -3,6 +3,7 @@ package com.unamurko.tripplanner.controller;
 import com.unamurko.tripplanner.entity.Trip;
 import com.unamurko.tripplanner.service.TripService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -37,4 +38,6 @@ public class TripController {
         tripService.deleteTrip(id);
         return "Trip deleted.";
     }
+
+
 }

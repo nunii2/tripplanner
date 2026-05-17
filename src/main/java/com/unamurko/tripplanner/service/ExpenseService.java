@@ -3,7 +3,10 @@ package com.unamurko.tripplanner.service;
 import com.unamurko.tripplanner.entity.Expense;
 import com.unamurko.tripplanner.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -22,7 +25,9 @@ public class ExpenseService {
 
     public Expense getExpenseById(Long id) {
         return expenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Expense not found"
+                ));
     }
 
     public Expense createExpense(Expense expense) {
